@@ -1,16 +1,18 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
+import {config} from 'dotenv' 
 import { createDoctor, dropDoctors, getDoctors } from './controllers/doctors.js'
 import { createPatient, dropPatients, getPatients } from './controllers/patients.js' 
 import { createAppointment, dropAppointments, getAppointments, changeTime } from './controllers/apointments.js'
 
-const PORT = 3070
+config()
+const PORT = +process.env.PORT
 
 const app = express()
 
+app.use('/api/', cors());
 app.use(express.json());
-app.use(cors());
 
 app.post('/api/', async(req, res) => {
     console.log('post api');

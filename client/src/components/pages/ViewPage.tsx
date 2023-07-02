@@ -37,17 +37,14 @@ export const ViewPage = ({
     blueString
   } = textString(checkForConflict(appointmentsCopy))
 
+  console.log();
+  
   
   const handlerDetails = (appointment: AppointmentModel) => {
     setIsOpen(true)
-    console.log('doctors ', doctors);
-    console.log('appointment ', appointment);
 
     const doctor = doctors.find(doctor => doctor.doctorId === appointment.doctorId)
     const patient = patients.find(patient => patient.patientId === appointment.patientId)
-    console.log('doctor ', doctor);
-    console.log('patient', patient);
-    console.log('appointment', appointment);
     
     if(doctor && patient){
     const message = {

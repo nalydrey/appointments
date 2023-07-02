@@ -12,10 +12,16 @@ import { change } from './func/change'
 import { DeletedResponse } from './components/DeletedResponse'
 
 
+const home = `${import.meta.env.VITE_PROTOKOL}://${import.meta.env.VITE_SERVER}:${import.meta.env.VITE_PORT}`
+
+console.log(home);
+
 function App() {
 
   const navigate = useNavigate()
 
+  const [errorMessage, setErrorMessage]  = useState<boolean>(false)
+  const [isPreloader, setPreloader] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [isOpenDel, setIsOpenDel] = useState<boolean>(false)
   const [obj, setObj] = useState<ObjModel>(initialData)
@@ -45,23 +51,49 @@ function App() {
       setAppointmentCopy(changeArr)
   }
 
+  const loadFinishWithError = () => {
+    setErrorMessage(true)
+    setPreloader(false)
+  }
+
   const loadData = async () => {
-      const {data} = await axios.get<ObjModel>('http://localhost:3070/api') 
+    try{
+      setPreloader(true)
+      const {data} = await axios.get<ObjModel>(`${home}/api`) 
       checkAndChange(data)
+      setPreloader(false)
+    }
+    catch{
+      loadFinishWithError()
+    }
   }
 
   const submit = async (fields: FormModel) => {
-      const {data} = await axios.post<ObjModel>('http://localhost:3070/api', fields)
+    try{
+      setPreloader(true)
+      const {data} = await axios.post<ObjModel>(`${home}/api`, fields)
       checkAndChange(data)
       setIsOpen(true)
+      setPreloader(false)
+    }
+    catch{
+      loadFinishWithError()
+    }
   }
   
   const clear = async () => {
-    const {data} = await axios.delete<DeleteMessage>('http://localhost:3070/api', {})
-    setObj({...obj, doctors: [], appointments: [], patients: []})
-    setAppointmentCopy([])
-    setDeletMessage({...deleteMessage, ...data})
-    setIsOpenDel(true)
+    try{
+      setPreloader(true)
+      const {data} = await axios.delete<DeleteMessage>(`${home}/api`, {})
+      setObj({...obj, doctors: [], appointments: [], patients: []})
+      setAppointmentCopy([])
+      setDeletMessage({...deleteMessage, ...data})
+      setIsOpenDel(true)
+      setPreloader(false)
+    }
+    catch{
+      loadFinishWithError()
+    }
   }
 
   
@@ -69,12 +101,18 @@ function App() {
   
 
 const handleSave = async() => {
-  const chengedAppointments = appointmentCopy.filter(appointment => appointment.isChanged);
-  const {data} = await axios.put<{appointments: AppointmentModel[]}>('http://localhost:3070/api', chengedAppointments)
-  const possibleArr = checkForPossible(data.appointments, obj.patients, obj.doctors)
-  const conflictArr = checkForConflict(possibleArr)
-  setObj({...obj, appointments: conflictArr})  
-  
+  try{
+    setPreloader(true)
+    const chengedAppointments = appointmentCopy.filter(appointment => appointment.isChanged);
+    const {data} = await axios.put<{appointments: AppointmentModel[]}>(`${home}/api`, chengedAppointments)
+    const possibleArr = checkForPossible(data.appointments, obj.patients, obj.doctors)
+    const conflictArr = checkForConflict(possibleArr)
+    setObj({...obj, appointments: conflictArr})  
+    setPreloader(false)
+  }
+  catch{
+    loadFinishWithError()
+  }
 }
 
   return (
@@ -132,6 +170,18 @@ const handleSave = async() => {
           <DeletedResponse
             deleteMessage={deleteMessage}
           />
+      </ModalWindow>
+      <ModalWindow
+          onEmptySpace={()=>{}}
+          isOpen={isPreloader}
+      >
+         <div className='text-3xl text-white'>Loading...</div>
+      </ModalWindow>
+      <ModalWindow
+          onEmptySpace={()=>{setErrorMessage(false)}}
+          isOpen={errorMessage}
+      >
+         <div className='text-3xl text-red-500'>Server isn't available</div>
       </ModalWindow>
     </div>
   )
