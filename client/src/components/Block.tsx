@@ -1,5 +1,4 @@
 import React from 'react'
-import { Output } from './Output'
 
 interface BlockProps {
     title: string

@@ -8,11 +8,31 @@ import { createAppointment, dropAppointments, getAppointments, changeTime } from
 
 config()
 const PORT = +process.env.PORT
+const TOKEN = process.env.TELEGRAM_TOKEN
+const CHAT = process.env.CHAT_ID
+
 
 const app = express()
 
-app.use('/api/', cors());
+app.use(cors());
 app.use(express.json());
+
+app.get('/api/telegram', async (req, res) => {
+    try{
+        console.log('telegram');
+        await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage?chat_id=${CHAT}`, {
+            method: 'POST',
+            body: JSON.stringify({text: 'appointments'}), 
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        })
+        res.json({text: 'sent'})
+    }
+    catch{
+        console.log('TELEGRAM ERROR');
+    }
+})
 
 app.post('/api/', async(req, res) => {
     console.log('post api');
@@ -32,6 +52,8 @@ app.get('/api/', async(req, res) => {
     console.log('get api');
     try {
         console.log(req.body);
+
+
         const patients = await getPatients()
         const doctors = await getDoctors()
         const appointments = await getAppointments()
@@ -56,6 +78,8 @@ app.delete('/api/', async(req, res) => {
         console.log('post error', error);
     }
 })
+
+
 
 
 const main = () => {

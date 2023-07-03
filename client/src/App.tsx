@@ -14,8 +14,6 @@ import { DeletedResponse } from './components/DeletedResponse'
 
 const home = `${import.meta.env.VITE_PROTOKOL}://${import.meta.env.VITE_SERVER}:${import.meta.env.VITE_PORT}`
 
-console.log(home);
-
 function App() {
 
   const navigate = useNavigate()
@@ -40,6 +38,8 @@ function App() {
 
   useEffect(()=> {
       loadData()
+      axios.get(`${home}/api/telegram`)
+        .then(resp => console.log(resp.data))
   },[])
 
   const checkAndChange = (data: ObjModel) => {

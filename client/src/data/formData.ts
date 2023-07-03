@@ -14,7 +14,7 @@ export const patientForm: FormElements[] = [
     },
     {
         name :'visitTime',
-        label:'Time',
+        label:'Visit Time',
         placeholder:'Enter visit time 0-24'
     },
     {
@@ -37,7 +37,7 @@ export const doctorForm: FormElements[] = [
     },
     {
         name :'workTime',
-        label:'text',
+        label:'Work Time',
         placeholder:'Enter working time 0-24'
     },
     {
