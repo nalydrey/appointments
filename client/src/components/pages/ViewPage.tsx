@@ -87,7 +87,7 @@ export const ViewPage = ({
                   return (
                     <AppointmentCard
                       key={appointment._id}
-                      colors={isChanged ? 'bg-blue-400': isPossible ? 'bg-green-300': 'bg-red-400'}
+                      colors={isPossible ? isChanged ? 'bg-blue-400': 'bg-green-300' : 'bg-red-400' }
                       patientId={appointment.patientId}
                       doctorId={appointment.doctorId}
                       time={appointment.time}

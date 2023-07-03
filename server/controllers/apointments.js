@@ -24,7 +24,7 @@ export const createAppointment = async ({appointmentPatientId, appointmentDoctor
 
         let isPossible = false
         let isConflict = false
-        
+        // console.log(appointmentTime);
         let time = +appointmentTime
 
         if(!isError){

@@ -31,6 +31,7 @@ app.get('/api/telegram', async (req, res) => {
     }
     catch{
         console.log('TELEGRAM ERROR');
+        res.json({text: 'error'})
     }
 })
 

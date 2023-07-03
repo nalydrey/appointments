@@ -39,7 +39,8 @@ function App() {
   useEffect(()=> {
       loadData()
       axios.get(`${home}/api/telegram`)
-        .then(resp => console.log(resp.data))
+        .then(() => console.log('!'))
+        .catch(() => console.log('!!!'));
   },[])
 
   const checkAndChange = (data: ObjModel) => {
@@ -47,8 +48,11 @@ function App() {
       const possibleArr = checkForPossible(appointments, patients, doctors)
       const conflictArr = checkForConflict(possibleArr)
       const changeArr = change(possibleArr, patients, doctors)
+      const checkedArr = checkForPossible(changeArr, patients, doctors)
+      console.log(checkedArr);
+      
       setObj({...obj, ...data, appointments: conflictArr})
-      setAppointmentCopy(changeArr)
+      setAppointmentCopy(checkedArr)
   }
 
   const loadFinishWithError = () => {
