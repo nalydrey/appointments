@@ -1,12 +1,15 @@
 
 export const validator = (id, timeDuration, fullName, born) => {
-    
+    console.log(fullName);
     let firstName = ''
     let lastName = ''
     let next = ''
     let date = []
     if(fullName){
-        [firstName, lastName, next] = fullName.split(' ')
+        const enteredName = fullName.split(' ')
+        firstName = enteredName[0] 
+        lastName = enteredName[1] || ''
+        next = enteredName[2]
     }
     if(born){
         date =  born.split('.')
@@ -24,10 +27,14 @@ export const validator = (id, timeDuration, fullName, born) => {
         lastName
     }
 
+
     const isTrueTime = times.length === 2 && !times.some(time => isNaN(time)) && times[0] < times[1] && times[0] >= 0 && times[1] <=24
-    const isTrueName = !next 
-    const isTrueDate = born ? date.length === 3 && !date.some(time => isNaN(time)) && +date[0]<=31 && +date[0] > 0 && +date[1] <=12 && +date[1] > 0 +date[2] <= 2023 && +date[2]>= 1900 : true 
-    
+    const isTrueName = !next && fullName.split('').every(symbol => {
+        const unicode = symbol.charCodeAt(0)
+        return unicode === 32 || (unicode >= 65 && unicode <=90) || (unicode >= 97 && unicode <= 122) 
+    })
+    const isTrueDate = !!born ? date.length === 3 && !date.some(time => isNaN(time)) && +date[0]<=31 && +date[0] > 0 && +date[1] <=12 && +date[1] > 0 +date[2] <= 2023 && +date[2]>= 1000 : true 
+    console.log("isTrueDate", isTrueDate);
     
 
     if(!id && !timeDuration && !fullName && !born){

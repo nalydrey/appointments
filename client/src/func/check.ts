@@ -2,8 +2,9 @@ import { AppointmentModel, DoctorModel, PatientModel } from "../Models/Models"
 
 export const checkForConflict = (appointments: AppointmentModel[]) => {
     return appointments.map((appointment) => {
-        const conflictAppointments = appointments.filter(elem => (appointment.doctorId===elem.doctorId && appointment.time === elem.time) )
-        if (conflictAppointments.length > 1){
+        const conflictAppointments = appointments.filter(elem => (elem.time && appointment.doctorId===elem.doctorId && appointment.time === elem.time) )
+        const conflPat =  appointments.filter(elem => (elem.time && appointment.patientId===elem.patientId && appointment.time === elem.time) )
+        if (conflictAppointments.length > 1 || conflPat.length > 1){
           return {...appointment, isConflict: true}
         }
         else{

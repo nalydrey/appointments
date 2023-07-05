@@ -49,7 +49,7 @@ function App() {
       const conflictArr = checkForConflict(possibleArr)
       const changeArr = change(possibleArr, patients, doctors)
       const checkedArr = checkForPossible(changeArr, patients, doctors)
-      console.log(checkedArr);
+      // console.log(checkedArr);
       
       setObj({...obj, ...data, appointments: conflictArr})
       setAppointmentCopy(checkedArr)

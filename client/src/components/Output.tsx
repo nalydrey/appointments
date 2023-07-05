@@ -21,7 +21,7 @@ export const Output = ({
                     key={field.name}
                 > 
                 {   
-                    field.data &&
+                    (field.data || field.data === 0) &&
                     <>
                         <p>{field.name}</p>
                         <p>{field.data}</p>

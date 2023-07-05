@@ -16,24 +16,20 @@ export const getAppointments = async () => {
 export const createAppointment = async ({appointmentPatientId, appointmentDoctorId, appointmentTime}) => {
     console.log('create appointment');
     try {
-
+        console.log('appointmentTime', appointmentTime);
+  
         const {
             errorText,
             isError
         } = validAppointment(appointmentPatientId, appointmentDoctorId, appointmentTime)
 
-        let isPossible = false
-        let isConflict = false
-        // console.log(appointmentTime);
         let time = +appointmentTime
 
         if(!isError){
             const appointment = new Appointment({
                 patientId: appointmentPatientId,
                 doctorId: appointmentDoctorId,
-                time,
-                isPossible,
-                isConflict
+                time: appointmentTime ? appointmentTime : null
             })
             await appointment.save()
         }

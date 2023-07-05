@@ -23,6 +23,9 @@ export const HomePage = ({
     onClear
 }: HomePageProps) => {
 
+   
+
+
   const [fields, setFields] = useState<FormModel>(initialState)
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
